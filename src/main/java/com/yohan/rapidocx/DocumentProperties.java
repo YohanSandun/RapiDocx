@@ -84,6 +84,86 @@ public class DocumentProperties {
                 "</w:document>\n";
     }
 
+    public Integer getPageWidth() {
+        return pageWidth;
+    }
+
+    public void setPageWidth(Integer pageWidth) {
+        this.pageWidth = pageWidth;
+    }
+
+    public Integer getPageHeight() {
+        return pageHeight;
+    }
+
+    public void setPageHeight(Integer pageHeight) {
+        this.pageHeight = pageHeight;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+    }
+
+    public Integer getMarginTop() {
+        return marginTop;
+    }
+
+    public void setMarginTop(Integer marginTop) {
+        this.marginTop = marginTop;
+    }
+
+    public Integer getMarginLeft() {
+        return marginLeft;
+    }
+
+    public void setMarginLeft(Integer marginLeft) {
+        this.marginLeft = marginLeft;
+    }
+
+    public Integer getMarginRight() {
+        return marginRight;
+    }
+
+    public void setMarginRight(Integer marginRight) {
+        this.marginRight = marginRight;
+    }
+
+    public Integer getMarginBottom() {
+        return marginBottom;
+    }
+
+    public void setMarginBottom(Integer marginBottom) {
+        this.marginBottom = marginBottom;
+    }
+
+    public Integer getMarginHeader() {
+        return marginHeader;
+    }
+
+    public void setMarginHeader(Integer marginHeader) {
+        this.marginHeader = marginHeader;
+    }
+
+    public Integer getMarginFooter() {
+        return marginFooter;
+    }
+
+    public void setMarginFooter(Integer marginFooter) {
+        this.marginFooter = marginFooter;
+    }
+
+    public Integer getMarginGutter() {
+        return marginGutter;
+    }
+
+    public void setMarginGutter(Integer marginGutter) {
+        this.marginGutter = marginGutter;
+    }
+
     public static Builder builder() {
         return new Builder();
     }

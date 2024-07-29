@@ -1,15 +1,29 @@
 package com.yohan.rapidocx;
 
+import com.yohan.rapidocx.utils.HtmlHelper;
 import com.yohan.rapidocx.utils.ZipHelper;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipOutputStream;
 
 public class HtmlToDocxConverter {
 
     public byte[] convert(String sourceHtml, DocumentProperties properties)
             throws IOException {
+
+        Document document = Jsoup.parse(sourceHtml);
+        replaceSemanticElementsWithDivs(document);
+        convertInlineCSSIntoClasses(document);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
 
@@ -40,7 +54,7 @@ public class HtmlToDocxConverter {
                 properties.getAsXml(),
                 zipOutputStream);
 
-        ZipHelper.addFileToZip("word/afchunk.mht", convertHtmlToMht(sourceHtml), zipOutputStream);
+        ZipHelper.addFileToZip("word/afchunk.mht", convertHtmlToMht(document.html()), zipOutputStream);
 
         ZipHelper.addFileToZip(
                 "word/_rels/document.xml.rels",
@@ -57,6 +71,63 @@ public class HtmlToDocxConverter {
         byte[] zipData = outputStream.toByteArray();
         outputStream.close();
         return zipData;
+    }
+
+    private void replaceSemanticElementsWithDivs(Document document) {
+        String[] elements = {
+                "main", "header", "footer"
+        };
+        for (String element : elements) {
+            replaceElementsWithDivs(document, element);
+        }
+    }
+
+    private void replaceElementsWithDivs(Document document, String elementToReplace) {
+        Elements elements = document.getElementsByTag(elementToReplace);
+        for (Element element : elements) {
+            Element divElement = new Element("div");
+            divElement.attributes().addAll(element.attributes());
+            divElement.html(element.html());
+            element.replaceWith(divElement);
+        }
+    }
+
+    private Document convertInlineCSSIntoClasses(Document document) {
+        Map<String, String> cssClassMap = new HashMap<>();
+        int classCounter = 1;
+
+        Elements elements = document.select("[style]");
+
+        for (Element element: elements) {
+            String style = element.attr("style");
+            String convertedStyle = HtmlHelper.convertHslToRgb(style);
+            String className = cssClassMap.get(convertedStyle);
+
+            if (className == null) {
+                className = "class" + classCounter++;
+                cssClassMap.put(convertedStyle, className);
+            }
+
+            element.removeAttr("style");
+            element.addClass(className);
+        }
+
+        StringBuilder classes = new StringBuilder();
+        for (Map.Entry<String, String> entry : cssClassMap.entrySet()) {
+            classes.append(".")
+                    .append(entry.getValue())
+                    .append(" {")
+                    .append(entry.getKey())
+                    .append("}\n");
+        }
+
+        Element styleTag = document.head().getElementsByTag("style").first();
+        if (styleTag != null) {
+            styleTag.append(classes.toString());
+        } else {
+            document.head().append("<style>\n" + classes + "\n</style>\n");
+        }
+        return document;
     }
 
     private String convertHtmlToMht(String html) {

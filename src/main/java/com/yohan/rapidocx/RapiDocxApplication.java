@@ -19,10 +19,11 @@ public class RapiDocxApplication {
                 "            margin: 20px;\n" +
                 "            background-color: rgb(200,200,200);\n" +
                 "        }\n" +
-                "        header {\n" +
-                "            background: rgb(57,154,142);\n" +
+                "        .header {\n" +
+                "            background: #00ff00;\n" +
                 "            color: #ffffff;\n" +
-                "            padding: 10px 20px;\n" +
+                "            border: 1px dashed black;" +
+                "            margin-top: 20px;\n" +
                 "            text-align: center;\n" +
                 "        }\n" +
                 "        .main {\n" +
@@ -39,10 +40,10 @@ public class RapiDocxApplication {
                 "    </style>\n" +
                 "</head>\n" +
                 "<body class=\"body\">\n" +
-                "    <header>\n" +
+                "    <header class=\"header\">\n" +
                 "        <h1>Welcome to My Simple HTML Page</h1>\n" +
                 "    </header>\n" +
-                "    <div class=\"main\">\n" +
+                "    <main class=\"main\">\n" +
                 "        <h2>About This Page</h2>\n" +
                 "        <p>This is a simple HTML page created as an example. It includes a header, main content section, and a footer.</p>\n" +
                 "        \n" +
@@ -55,10 +56,10 @@ public class RapiDocxApplication {
                 "\n" +
                 "        <h3>Contact Information</h3>\n" +
                 "        <p>If you have any questions, feel free to reach out at <a href=\"mailto:example@example.com\">example@example.com</a>.</p>\n" +
-                "    </div>\n" +
-                "    <div class=\"footer\">\n" +
+                "    </main>\n" +
+                "    <footer class=\"footer\">\n" +
                 "        <p>&copy; 2024 My Simple HTML Page</p>\n" +
-                "    </div>\n" +
+                "    </footer>\n" +
                 "</body>\n" +
                 "</html>", properties);
 
